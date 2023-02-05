@@ -16,7 +16,7 @@
 
 | 问题点 | 问题点简答 | git中对应地址 | 是否重要 | 更新时间
 |-: |-: | :-:  | :- | :-
-|<b id="评价指标">模型评价指标</b> | 回归、分类、机器翻译类问题的评价指标 | [评价指标总结.md](https://github.com/w666x/blog_items/tree/main/summary_nlp/ml/评价指标总结.md)| 是 | 20230206
+|<b id="评价指标">模型评价指标</b> | 回归、分类、机器翻译类问题的评价指标 | [评价指标总结.md](https://github.com/w666x/summary_nlp/blob/main/ml/评价指标总结.md)| 是 | 20230206
 
 
 ## 算法介绍
