@@ -25,6 +25,9 @@
 #### 相关内容
 - 逻辑回归为啥不用mse
     - 因为用MSE作为二元分类的损失函数会有梯度消失的问题
+    - logistics回归的损失函数的梯度求解，如下图所示
+    
+![logistics回归的损失函数](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/logistics回归的损失函数.jpg)
 
 
 ### SVM
