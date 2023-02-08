@@ -21,3 +21,5 @@
 ![GRU更新门](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/GRU结构图.jpg)
 
 <!-- #endregion -->
+
+### 模型初始化
