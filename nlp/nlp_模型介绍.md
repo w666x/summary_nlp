@@ -22,4 +22,17 @@
 
 <!-- #endregion -->
 
-### 模型初始化
+<!-- #region -->
+#### word2vec对比
+
+- 主要有Skip-Gram和CBOW两种，
+    - **从直观上讲，Skip-Gram是给定input word预测上下文，而CBOW是给定上下文，来预测input word**。
+    - 总体上说，skip-gram的训练时间更长，对于一些出现频率不高的词，在CBOW中的学习效果就不如Skip-Gram，skip-gram准确率更高。
+
+
+- CBOW模型中input是context（周围词）而output是中心词，
+    - 训练过程中其实是在从output的loss学习周围词的信息也就是embedding，但是在中间层是average的，一共预测V(vocab size)次就够了。
+- skipgram是用中心词预测周围词，
+    - 预测的时候是一对word pair，等于对每一个中心词都有K个词作为output，
+    - 对于一个词的预测有K次，所以能够更有效的从context中学习信息，但是总共预测K*V词。
+<!-- #endregion -->
