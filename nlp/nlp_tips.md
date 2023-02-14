@@ -201,7 +201,7 @@
 - 7） LSTM的<a id="tag7"></a>"门（gate）"结构
     - LSTM全称是长短期记忆网络（long-short term memory networks），LSTM的结构设计可以改善RNN中的梯度消失的问题。
     - **主要原因在于LSTM内部复杂的“门”(gates)。**
-- 8) MAXOUT <a id="tag10"></a>
+- 8）MAXOUT <a id="tag10"></a>
     - Maxout是深度学习网络中的一层网络，就像池化层、卷积层一样等，我们可以把maxout 看成是网络的激活函数层
     - 我们假设网络某一层的输入特征向量为： $X=(x_1,x_2,……x_d)$，也就是我们输入是d个神经元。Maxout隐藏层每个神经元的计算公式如下：
     $$h_i(x) = \max_{j\in [1,k]}Z_{ij},其中，\color{blue}{k就是maxout层所需要的参数了，由我们人为设定大小。}$$
