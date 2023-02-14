@@ -22,12 +22,17 @@
 
 <!-- #endregion -->
 
+<!-- #region -->
 #### HMM vs CRF
-- 区别
+- 区别，详细内容可参考[EM&HMM和CRF模型](https://github.com/w666x/blog_items/blob/main/04_nlp/EM&HMM&CRF模型.md)
     - 1.HMM是生成模型，CRF是判别模型；
-    - 2. CRF利用的是马尔科夫随机场（无向图），而HMM的基础是贝叶斯网络（有向图）；
-    - 3.概率计算问题、学习问题和预测问题；
+    - 2.CRF利用的是马尔科夫随机场（无向图），而HMM的基础是贝叶斯网络（有向图）；
+    - 3.在概率计算问题、学习问题和预测问题上有差异；
     - 4.HMM求解的是局部最优解，CRF求解的是全局最优解。
+    
+    
+![HMM改进](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM改进.jpg)
+<!-- #endregion -->
 
 <!-- #region -->
 #### 词向量
