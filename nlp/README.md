@@ -30,7 +30,7 @@
 
 | 问题点 | 问题点简答 | git中对应地址 | 是否重要 | 更新时间
 |-: |-: | :-:  | :- | :-
-|<b id="models">算法对比</b> | 生成模型 vs 判别模型、BERT vs ELMo vs GPT | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230215
+|<b id="models">算法对比</b> | 生成模型 vs 判别模型、BERT vs ELMo vs GPT、HMM三个问题 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230215
 |<b id="models">算法对比</b> | rnn vs cnn、LSTM vs GRU | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230207
 
 

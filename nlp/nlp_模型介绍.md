@@ -95,18 +95,6 @@
     - 包含三要素： $初始状态概率向量\pi$，状态转移概率矩阵A，观测概率矩阵B。
     
     
-- 确定HMM，有如下定义
-    - 设Q是所有可能的状态集合，V是所有可能的观测集合； $Q={q_1,q_2,\cdots,q_N}；V={v_1,v_2,\cdots,V_M}$
-    - N是可能的状态数，M是可能的观测数
-    - I是长度为T的状态序列；O是对应的观测序列； $I=(i_1,i_2,\cdots,i_t)；O=(o_1,o_2,\cdots,o_T)$
-    - 状态转移概率矩阵，**模型在各个状态间转换的概率**，记为 $A=[a_{ij}]_{NxN}$，其中，
-    $$a_{ij}=P(i_{t+1}=q_j\|i_t=q_i),\quad 1< i,j < N，\text{表示时刻t处于状态 $q_i$的条件下时刻t+1转移到状态 $q_j$的概率}$$
-    - 观测概率矩阵,**根据当前状态获取各个观测值的概率**，记为 $B=[b_j(k)]_{NxM}$，其中，
-    $$b_j(k) = P(o_t=v_k|i_t=q_j),\quad k=1,2,\cdots,M;j=1,2,\cdots,N,\text{表示时刻t处于状态 $q_j$的条件下生成观测$v_k$的概率}$$
-    - 初始状态概率，**模型在初始时刻各状态出现的概率**，记为 $\pi = (\pi_i)$，其中，
-    $$\pi_i = P(i_1=q_i), \quad i=1,2,\cdots, N，\text{表示模型的初始状态时刻t=1处于状态 $q_i$的概率}$$
-    
-    
 2. 判别模型-最大熵模型
     - 原理：概率模型中，熵最大的模型是最好的模型，可以使用拉格朗日函数求解对偶问题解决。
 
@@ -332,3 +320,56 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 
    
 <!-- #endregion -->
+
+### 模型定义
+
+<!-- #region -->
+#### HMM算法
+    
+- 确定HMM，有如下定义
+    - 设Q是所有可能的状态集合，V是所有可能的观测集合； $Q={q_1,q_2,\cdots,q_N}；V={v_1,v_2,\cdots,V_M}$
+    - N是可能的状态数，M是可能的观测数
+    - I是长度为T的状态序列；O是对应的观测序列； $I=(i_1,i_2,\cdots,i_t)；O=(o_1,o_2,\cdots,o_T)$
+    - 状态转移概率矩阵，**模型在各个状态间转换的概率**，记为 $A=[a_{ij}]_{NxN}$，其中，
+    $$a_{ij}=P(i_{t+1}=q_j\|i_t=q_i),\quad 1< i,j < N, \text{表示时刻t处于状态 $q_i$的条件下时刻t+1转移到状态 $q_j$的概率}$$
+    - 观测概率矩阵,**根据当前状态获取各个观测值的概率**，记为 $B=[b_j(k)]_{NxM}$，其中，
+    $$b_j(k) = P(o_t=v_k|i_t=q_j),\quad k=1,2,\cdots,M;j=1,2,\cdots,N,\text{表示时刻t处于状态 $q_j$的条件下生成观测$v_k$的概率}$$
+    - 初始状态概率，**模型在初始时刻各状态出现的概率**，记为 $\pi = (\pi_i)$，其中，
+    $$\pi_i = P(i_1=q_i), \quad i=1,2,\cdots, N，\text{表示模型的初始状态时刻t=1处于状态 $q_i$的概率}$$
+
+
+
+- 常见的3个问题
+    - **概率计算问题**
+        - 给定模型 $\lambda = (A,B,\pi)和观测序列O=(o_1,o_2,\cdots,o_T)$
+        - 计算该观测序列出现的概率
+        - demo为：模型 $\lambda = (A,B,\pi)$已知，观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $
+        - 需要求解 $P(Q|\lambda)$，即观测序列Q发生的概率，可通过前向-后向算法求解
+    - **学习问题**
+        - 已知观测序列 $O=(o_1,o_2,\cdots,o_T)$，估计模型 $\lambda = (A,B,\pi)$的参数
+        - 使得在该模型下观测序列概率 $P(O|\lambda)$最大
+        - demo为：根据观测序列 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，去寻找模型的一组隐状态参数 $\lambda = (A,B,\pi)$，使得模型在观测序列发生时， $P(Q|\lambda)$最大
+    - **预测问题**
+        - 已知模型和观测序列 $O=(o_1,o_2,\cdots,o_T)$
+        - 求对给定观测序列条件概率 $P(I|O)$最大的状态序列 $I=(i_1,i_2,\cdots,i_t)$
+        - demo为：已知观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，当已知模型参数 $\lambda = (A,B,\pi)$后，求出哪一种状态序列发生的可能性最大。
+        - 即，抽取什么样的盒子顺序（状态序列），更有可能得到 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $的观测结$
+<!-- #endregion -->
+
+### 实现demo
+
+
+#### HMM进行分词
+- 关于HMM，详细内容可参考[EM&HMM和CRF模型](https://github.com/w666x/blog_items/blob/main/04_nlp/EM&HMM&CRF模型.md)
+- 本质上看，分词可以看做是一个为文本中每个字符分类的过程，例如我们现在定义两个类别：
+    - E代表词尾词，B代表非词尾词，
+    - 于是分词“你/现在/应该/去/幼儿园/了”可以表达为：你E现B在E应B该E去E幼B儿B园E了B，
+    - 分类完成后只需要对结果进行“解读”就可以得到分词结果了。
+
+
+- 以下面例子做说明，当我们计算到第三个汉字“是”后停止，
+    - 首先，应用上式算法步骤中的终止过程，计算 $P^*和i_T^*$的值，为 $P^*=0.1008、i_3^*=s$
+    - 然后，进行回溯，即： $i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
+    - 综上，即得到前三个状态序列为：(b, e, s)
+    
+![维特比算法实例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/维特比算法实例.jpg)
