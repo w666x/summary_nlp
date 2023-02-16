@@ -3,10 +3,9 @@
 
 | 类别 | 所属类别说明 | 内容简介 | 知识点数 | 重要知识点数量 | 更新时间
 |:- |-: | :-: | :-  | :- | :- 
-|[model](#算法介绍) | nlp算法对比 | [nlp_模型介绍](#models) | 2 | 2 | 20230215
+|[model](#算法介绍) | nlp算法对比 | [nlp_模型介绍](#models) | 2 | 2 | 20230216
 |[nlp](#nlptips) | nlp技巧总结 | [nlp技巧](#tips) | 1 | 1 | 20230207
 |[nlp](#nlptips) | nlp技巧总结 | [nlp_工具对比](#tools) | 1 | 1 | 20230207
-|[model](#算法介绍) | nlp算法对比 | [nlp_模型介绍](#models) | 1 | 1 | 20230207
 
 
 ```html
@@ -30,6 +29,7 @@
 
 | 问题点 | 问题点简答 | git中对应地址 | 是否重要 | 更新时间
 |-: |-: | :-:  | :- | :-
+|<b id="models">算法对比</b> | 马尔科夫介绍 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230216
 |<b id="models">算法对比</b> | 生成模型 vs 判别模型、BERT vs ELMo vs GPT、HMM三个问题 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230215
 |<b id="models">算法对比</b> | rnn vs cnn、LSTM vs GRU | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230207
 
