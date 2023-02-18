@@ -41,3 +41,13 @@
 
 
 ## 其他
+
+
+| 经验帖 | 主要内容 | 分类 | 发布时间 | 是否有用 | 阅读时间
+|:- |:- |:- |:- |:- |:-
+| [字节跳动NLP算法面试题整理](https://mp.weixin.qq.com/s/2IH3XIG2XimGJpZ1ZxxIvg) | 常见问题和经验贴、Leecode题 | 问题 | 2021年4月 |  | 20230218
+| [【NLP高频面试题】文本处理](https://mp.weixin.qq.com/s/9T1a7tnvjw6RviIy8mU2aw) | 分词、文本增强、语言模型及评价指标 | 问题和答案 | 2021年1月 | 是 | 20230217
+| [NLP从业者拿到BAT50万offer的提升历程：分享近100道NLP面试题](https://mp.weixin.qq.com/s/trBMgNzsox-5Vt1RYMa23g) | 常见问题和经验贴、Leecode题 | 问题 | 2021年7月 |  | 20230215
+| [NLP方向HMM算法面试题6道](https://mp.weixin.qq.com/s/xO8gf0Ik5o_Rkma-09yOKw) | 马尔科夫算法相关知识点 | 问题和答案 | 2023年1月 | 是 | 20230215
+| [腾讯NLP算法面试题整](https://mp.weixin.qq.com/s/g4Kbr3nu9hZt4BZ8cIECXA) | 常见问题和经验贴、Leecode题 | 问题 | 2021年5月 | 
+| [转行NLP拿下40万offer：分享我面试中遇到的54道面试题](https://mp.weixin.qq.com/s/UygdcZOCaqgdqDrP6bx97Q) | 评价指标、优化器、模型对比 | 问题和答案 | 2021年1月 | 是 | 20230207
