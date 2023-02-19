@@ -44,7 +44,9 @@
 
 
 | 经验帖 | 主要内容 | 分类 | 发布时间 | 是否有用 | 阅读时间
-|:- |:- |:- |:- |:- |:-
+|:- |:- |:- |:- |:- |:- 
+| [算法工程师-自然语言处理（NLP）类岗位面试题目](https://mp.weixin.qq.com/s/oAoGtbe7Gt2nbqBg9jXnPA) | 词向量的一些知识点总结 | 问题和答案 | 2021年8月 | | 20230219
+|[NLP面试高频10道笔试题分享](https://mp.weixin.qq.com/s/A6pmgqV1HyT9w3ljypvUug) | 词向量及项目工程的一些QA | 问题和答案 | 2021年11月 | | 20230219
 | [字节跳动NLP算法面试题整理](https://mp.weixin.qq.com/s/2IH3XIG2XimGJpZ1ZxxIvg) | 常见问题和经验贴、Leecode题 | 问题 | 2021年4月 |  | 20230218
 | [【NLP高频面试题】文本处理](https://mp.weixin.qq.com/s/9T1a7tnvjw6RviIy8mU2aw) | 分词、文本增强、语言模型及评价指标 | 问题和答案 | 2021年1月 | 是 | 20230217
 | [NLP从业者拿到BAT50万offer的提升历程：分享近100道NLP面试题](https://mp.weixin.qq.com/s/trBMgNzsox-5Vt1RYMa23g) | 常见问题和经验贴、Leecode题 | 问题 | 2021年7月 |  | 20230215
