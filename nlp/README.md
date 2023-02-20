@@ -30,6 +30,7 @@
 
 | 问题点 | 问题点简答 | git中对应地址 | 是否重要 | 更新时间
 |-: |-: | :-:  | :- | :-
+|<b id="models">算法对比</b> | CNN模型、word2vec词向量信息 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230220
 |<b id="nlp_base">nlp_一般知识点</b> | 文本处理 | [nlp_一般知识点.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_一般知识点.md)| 是 | 20230217
 |<b id="models">算法对比</b> | 马尔科夫介绍 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230216
 |<b id="models">算法对比</b> | 生成模型 vs 判别模型、BERT vs ELMo vs GPT、HMM三个问题 | [nlp_模型介绍.md](https://github.com/w666x/summary_nlp/blob/main/nlp/nlp_模型介绍.md)| 是 | 20230215
