@@ -318,7 +318,7 @@ $$h(x) = \begin{cases} (\frac{x}{c})^{\alpha} & x \le c ,\text{比如c = 100, $\
 | 方法 | 特点 | 适用场景 | 复杂度
 |:- |:- |:- |:- 
 | [Hierarchical softmax](#层次softmax) | 层次softmax，使用了二叉树 [Huffman树](#test1) ，根据根节点到叶节点的路径来构造损失函数 | 在低频词上表现更好| 训练中每一步的梯度计算量与词典大小的对数相关
-| [负采样](#负采样) | 通过考虑同时包含正负样本的相互独立事件来构造损失函数 | 在高频词和较低维度的向量上表现好 | 训练中每一步的梯度计算量与负采样的个数K呈线性关系
+| [负采样](#负采样) | 通过考虑同时包含正负样本的相互独立事件来构造损失函数 <br> 具体方法为：根据词频进行采样，也就是**词频越大的词被采到的概率也越大**。 | 在高频词和较低维度的向量上表现好 | 训练中每一步的梯度计算量与负采样的个数K呈线性关系
 | sub sampling |每个词都有一定的概率被丢弃，词频越高丢弃概率越大 | 样本不均衡
 <!-- #endregion -->
 
@@ -430,6 +430,14 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 | 激活层 | sigmoid激活函数等 | | 提取非线性信息啦
 | 池化层 | 比如最大池化Max-pooling，取整个区域的最大值作为特征 | 取整个区域的值作对应运算 | 最为常见，在自然语言处理中常用于分类问题，希望观察到的特征是强特征，以便可以区分出是哪一个类别
 | 全连接层 | 线性全连接层
+
+
+- 卷积核的特点
+    - 1、大卷积核用多个小卷积核代替；
+    - 2、单一尺寸的卷积核用多尺寸卷积核代替；
+    - 3、固定形状卷积核趋于使用可变形卷积核；
+    - 4、使用1*1卷积核；
+    - **5、通过小卷积核减少通道个数（1* 1），通过大卷积核来提取特征（5* 5）**
     
 ![CNN在文本中的应用](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/CNN在文本中的应用.png)
 ![多通道卷积示例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/多通道卷积.jpg)
@@ -492,8 +500,26 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 <!-- #endregion -->
 
 <!-- #region -->
+#### Transformer
+- 简介
+    - Transformer本身是一个典型的encoder-decoder模型，Encoder端和Decoder端均有6个Block
+    - Encoder端的Block包括两个模块，多头self-attention模块以及一个前馈神经网络模块；
+    - Decoder端的Block包括三个模块，多头self-attention模块，多头Encoder-Decoder attention交互模块，以及一个前馈神经网络模块；
+    - 需要注意：**Encoder端和Decoder端中的每个模块都有残差层和Layer Normalization层。即下图的Add & Norm**
+    
+    
+- transformer模型由编码器（6层）和解码器（6层）组成，下文主要介绍编码器和解码器的内容；
+    - 编码器，将自然语言序列映射成隐藏层表示（hidden state）；
+    - 解码器，将隐藏层映射为自然语音序列，进而解决各类问题。
+    - 原transformer模型为了加速residual connections，**将所有子层以及embedding层的输出都设置为512**
+    - 2个堆叠式编码器和解码器组成的Transformer中，是需要**Encoder-Decoder Attention**的
+
+![transformer_结构](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/transformer结构图.png)
+<!-- #endregion -->
+
+<!-- #region -->
 #### BERT模型
-- Bert 的是怎样预训练的 
+1. Bert 的是怎样预训练的 
     - MLM：将完整句子中的部分字 mask，预测该 mask 词 
     - NSP：为每个训练前的例子选择句子 A 和 B 时，50% 的情况下 B 是真的在 A 后面的下一个句子， 50% 的情况下是来自语料库的随机句子，进行二分预测是否为真实下一句 在数据中随机选择 15% 的标记，其中 80%被换位[mask]，10%不变、10%随机替换其他单 词，原因是什么
         - mask 只会出现在构造句子中，当真实场景下是不会出现 mask 的，全 mask 不 match 句型了
@@ -501,10 +527,33 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         - 强迫文本记忆上下文信息
 
 
-- 为什么 BERT 有 3 个嵌入层，它们都是如何实现的
+2. 为什么 BERT 有 3 个嵌入层，它们都是如何实现的
     - input_id 是语义表达，和传统的 w2v 一样，方法也一样的 lookup
     - segment_id 是辅助 BERT 区别句子对中的两个句子的向量表示，从[1,embedding_size]里 面 lookup
     - position_id 是为了获取文本天生的有序信息，否则就和传统词袋模型一样了，从 [511,embedding_size]里面 lookup 
+    
+    
+3. Bert里面为什么用layer normalization，而不用batch normalization，分别讲一下这两个啥意思。
+    - Batch Normalization 是对这批样本的同一维度特征做归一化， 
+    - Layer Normalization 是对这单个样本的所有维度特征做归一化。
+    - 区别：
+        - LN中同层神经元输入拥有相同的均值和方差，不同的输入样本有不同的均值和方差；
+        - BN中则针对不同神经元输入计算均值和方差，同一个batch中的输入拥有相同的均值和方差。
+    - LN不依赖于batch的大小和输入sequence的长度，因此可以用于batch size为1和RNN中sequence的normalize操作。
+    
+    
+4. Bert里面为什么Q，K，V要用三个不同的矩阵，用一个不是也行吗。
+    - 如果使用相同的矩阵，相同量级的情况下，q和k进行点积的值会是最大的，进行softmax的加权平均后，该词所占的比重会最大，使得其他词的比重很少，**无法有效利用上下文信息来增强当前词的语义表示，**
+    - 而使用不同的QKV后，会很大程度减轻上述的影响。
+    
+    
+5. Bert和transformer讲一下。
+    - 1 **bert只有transformer的encode 结构 ，是生成语言模型**
+    - 2 bert 加入了输入句子的 mask机制，在输入的时候会随机mask
+    - 3 模型接收两个句子作为输入，并且预测其中第二个句子是否在原始文档中也是后续句子 可以做对话机制的应答。
+    - 4 在训练 BERT 模型时，Masked LM 和 Next Sentence Prediction 是一起训练的，目标就是要最小化两种策略的组合损失函数。
+
+
 <!-- #endregion -->
 
 ### 实现demo

@@ -46,6 +46,10 @@
 
 | 经验帖 | 主要内容 | 分类 | 发布时间 | 是否有用 | 阅读时间
 |:- |:- |:- |:- |:- |:-
+| [2022年京东NLP实习面试题7道](https://mp.weixin.qq.com/s/iPfe0q29m2AYE7vSUfIUjg) | beam search说明、LeeCode题目 | 问题和答案 | 2022年7月 | | 20230222
+| [2022年京东科技NLP实习面试题10道含解析](https://mp.weixin.qq.com/s/9GqbHyYI0fZYHVjeEQMV7w) | bert和xgboost的一些知识点 | 问题和答案 | 2022年7月 | 是 | 20230222
+| [2021年9月中旬，百度NLP岗位面试题分享！](https://mp.weixin.qq.com/s/iQ1duUdtt5gKBcCpbvu0tA) | 
+| [某车企NLP算法岗面试题](https://mp.weixin.qq.com/s/zS9PTFGJVy1YvxLHWvuQ1Q)| xgb、cnn、bert等10个题目 | 问题和答案 | 2021年12月 |  | 20230222
 | [1000面试题，BAT机器学习面试刷题宝典](https://mp.weixin.qq.com/s/iYHfqvEDCi_XDs07guW0vA) | NLP面试刷题 | 问题和答案 | 2019年3月 |  | 20230221
 | [一份NLP面试的知识点文档: NLP all in one](https://mp.weixin.qq.com/s/iuo3-32rIgDQT3cTbyrbAA) | NLP面试知识点 | 问题和答案 | 2022年5月 | 是 | 20230221
 | [算法工程师常见面试问题及相关资料汇总](https://mp.weixin.qq.com/s/eVE_Ic0rQFmvPUAgdQzu4g) | NLP面试经验贴github地址 | 问题 | 2019年10月 |  | 20230220
