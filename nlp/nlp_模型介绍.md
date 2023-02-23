@@ -554,6 +554,9 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
     - 4 在训练 BERT 模型时，Masked LM 和 Next Sentence Prediction 是一起训练的，目标就是要最小化两种策略的组合损失函数。
 
 
+6. attention为什么要除以根号下dk？
+    - QK进行点击之后，值之间的方差会较大，也就是大小差距会较大；
+    - 如果直接通过Softmax操作，会导致大的更大，小的更小；进行缩放，会使参数更平滑，训练效果更好。
 <!-- #endregion -->
 
 ### 实现demo
