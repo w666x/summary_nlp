@@ -48,15 +48,15 @@
 |:- |:- |:- |:- |:- |:-
 | [2021年9月中旬，百度NLP岗位面试题分享！](https://mp.weixin.qq.com/s/iQ1duUdtt5gKBcCpbvu0tA) | 初始化方法、神经网络调参、attention | 问题和答案 | 2021年11月 |  | 20230224
 | [2022年京东NLP实习面试题7道](https://mp.weixin.qq.com/s/iPfe0q29m2AYE7vSUfIUjg) | beam search说明、LeeCode题目 | 问题和答案 | 2022年7月 | | 20230222
-| [2022年京东科技NLP实习面试题10道含解析](https://mp.weixin.qq.com/s/9GqbHyYI0fZYHVjeEQMV7w) | bert和xgboost的一些知识点 | 问题和答案 | 2022年7月 | 是 | 20230222
+| [2022年京东科技NLP实习面试题10道含解析](https://mp.weixin.qq.com/s/9GqbHyYI0fZYHVjeEQMV7w) | bert和xgboost的一些知识点 | 问题和答案 | 2022年7月 |  | 20230222
 | [某车企NLP算法岗面试题](https://mp.weixin.qq.com/s/zS9PTFGJVy1YvxLHWvuQ1Q)| xgb、cnn、bert等10个题目 | 问题和答案 | 2021年12月 |  | 20230222
-| [1000面试题，BAT机器学习面试刷题宝典](https://mp.weixin.qq.com/s/iYHfqvEDCi_XDs07guW0vA) | NLP面试刷题 | 问题和答案 | 2019年3月 |  | 
+| [1000面试题，BAT机器学习面试刷题宝典](https://mp.weixin.qq.com/s/iYHfqvEDCi_XDs07guW0vA) | 原文是2017年发的，NLP面试刷题 | 问题和答案 | 2019年3月 |是  | 
 | [一份NLP面试的知识点文档: NLP all in one](https://mp.weixin.qq.com/s/iuo3-32rIgDQT3cTbyrbAA) | NLP面试知识点 | 问题和答案 | 2022年5月 | 是 | 20230221
 | [算法工程师常见面试问题及相关资料汇总](https://mp.weixin.qq.com/s/eVE_Ic0rQFmvPUAgdQzu4g) | NLP面试经验贴github地址 | 问题 | 2019年10月 |  | 20230220
 | [NLP面试宝典：38个最常见NLP问题答案一文get](https://mp.weixin.qq.com/s/JRux3PBtDts2fgmlCRNQew) | NLP一些知识点，都是选择题的形式 | 问题和答案 | 2020年2月 | | 20230220
 | [一文看尽80道AI算法高频面试题](https://mp.weixin.qq.com/s/5ZkwjtaVvDQmaZ6b9W3x6g) | 常见问题和经验贴 | 问题 | 2020年6月 |  | 20230219
 | [春招已近，这份GitHub万星的ML算法面试大全请收下](https://mp.weixin.qq.com/s/gUujyjv5lU_umtpRURh24w) | 常见问题和经验贴、Leecode题 | 问题 | 2019年2月 |  | 20230219
-| [NLP面试宝典：38个最常见NLP问题答案一文get](https://mp.weixin.qq.com/s/JRux3PBtDts2fgmlCRNQew) | 
+| [NLP面试宝典：38个最常见NLP问题答案一文get](https://mp.weixin.qq.com/s/JRux3PBtDts2fgmlCRNQew) | 常见问题和答案 | 问题和答案 | 2020年2月 | |  20230225
 | [算法工程师-自然语言处理（NLP）类岗位面试题目](https://mp.weixin.qq.com/s/oAoGtbe7Gt2nbqBg9jXnPA) | 词向量的一些知识点总结 | 问题和答案 | 2021年8月 | | 20230219
 |[NLP面试高频10道笔试题分享](https://mp.weixin.qq.com/s/A6pmgqV1HyT9w3ljypvUug) | 词向量及项目工程的一些QA | 问题和答案 | 2021年11月 | | 20230219
 | [字节跳动NLP算法面试题整理](https://mp.weixin.qq.com/s/2IH3XIG2XimGJpZ1ZxxIvg) | 常见问题和经验贴、Leecode题 | 问题 | 2021年4月 |  | 20230218

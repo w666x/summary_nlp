@@ -1,3 +1,31 @@
+```python
+def maxSubArray(nums):
+    """
+    :type nums: List[int]
+    :rtype: int
+    """
+    pre = nums[0]
+    res = 0
+    len_num = len(nums)
+    for i in range(1, len_num):
+        pre = max(pre + nums[i], nums[i]) # 当前位置，连续子数组的最大和的右索引为前一个位置，则记为pre
+        res = max(res, pre)
+    return res
+```
+
+```python
+nums = [-2,1,-3,4,-1,2,1,-5,4]
+maxSubArray(nums)
+```
+
+```python
+
+```
+
+```python
+
+```
+
 ### 模型对比
 
 
