@@ -451,9 +451,9 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 
 | 问题分类 | 说明 | demo | 求解方式
 |:- |:- |:- |:-
-| **概率计算问题** | 给定模型 $\lambda = (A,B,\pi)和观测序列O=(o_1,o_2,\cdots,o_T)$，计算该观测序列出现的概率 | 模型 $\lambda = (A,B,\pi)$已知，观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $ | 需要求解 $P(Q|\lambda)$，即观测序列Q发生的概率，可通过**前向-后向算法**求解
-| **学习问题** | 已知观测序列 $O=(o_1,o_2,\cdots,o_T)$，估计模型 $\lambda = (A,B,\pi)$的参数，使得在该模型下观测序列概率 $P(O|\lambda)$最大| demo为：根据观测序列 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，去寻找模型的一组隐状态参数 $\lambda = (A,B,\pi)$，使得模型在观测序列发生时， $P(Q|\lambda)$最大， | 使用EM算法求解
-| **预测问题**（即解码问题） | 已知模型和观测序列 $O=(o_1,o_2,\cdots,o_T)$，求对给定观测序列条件概率 $P(I|O)$最大的状态序列 $I=(i_1,i_2,\cdots,i_t)$ | demo为：已知观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，当已知模型参数 $\lambda = (A,B,\pi)$后，求出哪一种状态序列发生的可能性最大。 | 抽取什么样的盒子顺序（状态序列），更有可能得到 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $的观测结果，**使用维特比算法**、动态规划算法求解
+| **概率计算问题** | 给定模型 $\lambda = (A,B,\pi)和观测序列O=(o_1,o_2,\cdots,o_T)$，计算该观测序列出现的概率 | 模型 $\lambda = (A,B,\pi)$已知，观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $ | 需要求解 $P(Q\|\lambda)$，即观测序列Q发生的概率，可通过**前向-后向算法**求解
+| **学习问题** | 已知观测序列 $O=(o_1,o_2,\cdots,o_T)$，估计模型 $\lambda = (A,B,\pi)$的参数，使得在该模型下观测序列概率 $P(O\|\lambda)$最大| demo为：根据观测序列 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，去寻找模型的一组隐状态参数 $\lambda = (A,B,\pi)$，使得模型在观测序列发生时， $P(Q\|\lambda)$最大， | 使用EM算法求解
+| **预测问题**（即解码问题） | 已知模型和观测序列 $O=(o_1,o_2,\cdots,o_T)$，求对给定观测序列条件概率 $P(I\|O)$最大的状态序列 $I=(i_1,i_2,\cdots,i_t)$ | demo为：已知观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，当已知模型参数 $\lambda = (A,B,\pi)$后，求出哪一种状态序列发生的可能性最大。 | 抽取什么样的盒子顺序（状态序列），更有可能得到 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $的观测结果，**使用维特比算法**、动态规划算法求解
 
 
 - 马尔科夫过程
@@ -487,7 +487,11 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 
         
         
-        
+
+<!-- #endregion -->
+
+<!-- #region -->
+     
 - 1) 概率问题求解
     - 前向算法，特点是 $\color{red}{联合概率分布}$ ，
         - 定义 $\alpha_t{i} = P(o_1, o_2, \cdots, o_t, i_t = q_i|\lambda), 其中，\alpha_t(i)是o_1, o_2, \cdots, o_t和i_t$的联合概率分布
