@@ -145,8 +145,8 @@
 | LSA | 矩阵分解 | 主题模型，潜在语义分析 | 利用全局语料特征 | SVD矩阵分解求解计算复杂度大
 | [skip-gram](#跳词) | 即**用中间的单词，来预测其周围的单词** | 对生僻字有利，总体效果相对cbow较好 | 模型训练速度相对较慢；<br> 训练词向量同上下文无关
 | [cbow](#cbow方法) | 根据给定**上下文的词 $w_{input}$，预测中间目标词出现的概率 $w_t$** | 全称为Continuous Bag-of-Word Model，**词袋模型** | CBOW模型训练速度快 | 训练词向量同上下文无关
-| [fastText](#fasttext) | 在skip-gram模型的基础上，将**中心词的向量表示成了n-gram单词的子向量之和**<br>fasttext可以有效**解决OOV**（out of vocabulary）的情况<br>一般情况下，使用fastText进行文本分类的同时也会产生词的embedding，即embedding是fastText分类的产物。 | 结构同skip-gram相似  | 效率高 | 基于局部语料
-| [glove](#Glove) | 需要提前训练的，**词向量是静态的**，预测时上下文无关 | 等价于MF+Skip-gram | **基于全局语料**，结合了LSA（MF）和word2vec（skip-gram）的优点
+| [fastText](#fasttext) | 在skip-gram模型的基础上，将**中心词的向量表示成了n-gram单词的子向量之和**<br>一般情况下，使用fastText进行文本分类的同时也会产生词的embedding，即embedding是fastText分类的产物。 | 结构同skip-gram相似  | 效率高<br>fasttext可以有效**解决OOV**（out of vocabulary）的情况 | 基于局部语料
+| [glove](#Glove) | 需要提前训练的，**词向量是静态的**，预测时上下文无关；基于词共现矩阵来进行处理的 | 等价于MF+Skip-gram | **基于全局语料**，结合了LSA（MF）和word2vec（skip-gram）的优点
 | elmo/GPT/bert |假设向下文语境的词有相似含义；词向量为副产物，<br>**词向量是动态的**，其和上下文是相关的 | 预训练模型 | 动态特征，可以解决**一词多义问题** | 效率较低
 <!-- #endregion -->
 
@@ -564,16 +564,15 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         
         
 - 4）实例，demo
-
-- 以下面例子做说明，当我们计算到第三个汉字“是”后停止，
-    - 首先，应用上式算法步骤中的终止过程，计算 $最终概率P^*和最终的最优节点i_T^*$的值，为 $P^*=0.1008、i_3^*=s$
-    - 然后，进行回溯，即： $i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
-    - 综上，即得到前三个状态序列为：(b, e, s)
-- 定义，
-    - 定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$
-    - 另外，由于对于任意一个时刻的 $\Psi_t(i)其和\delta_{t}(i)$的唯一区别就是，多了1个 $b_i(o_t)$, 而在计算任意1个状态i时，这个值是固定值，所以 $\delta_{t}(i)$最大的状态i，也是 $\Psi_t(i)$最大的状态
-    - 比如， $\delta_{2}(e) = 0.252，对应的是\delta_{1}(b)*a_{be}*b_e(o_2) = 0.252，则\Psi_2(e) = b$
-    - 比如， $\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
+    - 以下面例子做说明，当我们计算到第三个汉字“是”后停止，
+        - 首先，应用上式算法步骤中的终止过程，计算 $最终概率P^*和最终的最优节点i_T^*$的值，为 $P^*=0.1008、i_3^*=s$
+        - 然后，进行回溯，即： $i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
+        - 综上，即得到前三个状态序列为：(b, e, s)
+    - 定义，
+        - 定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$
+        - 另外，由于对于任意一个时刻的 $\Psi_t(i)其和\delta_{t}(i)$的唯一区别就是，多了1个 $b_i(o_t)$, 而在计算任意1个状态i时，这个值是固定值，所以 $\delta_{t}(i)$最大的状态i，也是 $\Psi_t(i)$最大的状态
+        - 比如， $\delta_{2}(e) = 0.252，对应的是\delta_{1}(b)*a_{be}*b_e(o_2) = 0.252，则\Psi_2(e) = b$
+        - 比如， $\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
         
 ![维特比算法实例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/维特比算法实例.jpg)
 
