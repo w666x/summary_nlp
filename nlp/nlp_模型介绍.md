@@ -524,6 +524,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         - 观测变量 $O=(o_1,o_2,\cdots,o_T)，隐变量I={i_1,i_2,\cdots, i_T}，完全数据(O,I)={o_1,o_2,\cdots,o_T,i_1,i_2,\cdots,i_T}$
         - 完全数据的对数似然函数是 $logP(O,I|\lambda)$
     - 2）E步，求Q函数
+        - 首先定义Q函数
         $$\begin{aligned}Q(\lambda ,\hat\lambda) &= E_{I\text{~}P(I|O,\hat\lambda)}logP(O,I|\lambda) \\
         &= \sum_IP(I|O,\hat\lambda)logP(O,I|\lambda) \\ 
         &= \frac{1}{P(O|\hat\lambda)}\sum_IP(I,O|\hat\lambda)logP(O,I|\lambda)\end{aligned}$$
@@ -565,14 +566,14 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 - 4）实例，demo
 
 - 以下面例子做说明，当我们计算到第三个汉字“是”后停止，
-    - 首先，应用上式算法步骤中的终止过程，计算 $最终概率P^*和最终的最优节点i_T^*$的值，为$P^*=0.1008、i_3^*=s$
-    - 然后，进行回溯，即：$i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
+    - 首先，应用上式算法步骤中的终止过程，计算 $最终概率P^*和最终的最优节点i_T^*$的值，为 $P^*=0.1008、i_3^*=s$
+    - 然后，进行回溯，即： $i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
     - 综上，即得到前三个状态序列为：(b, e, s)
 - 定义，
     - 定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$
     - 另外，由于对于任意一个时刻的 $\Psi_t(i)其和\delta_{t}(i)$的唯一区别就是，多了1个 $b_i(o_t)$, 而在计算任意1个状态i时，这个值是固定值，所以 $\delta_{t}(i)$最大的状态i，也是 $\Psi_t(i)$最大的状态
-    - 比如，$\delta_{2}(e) = 0.252，对应的是\delta_{1}(b)*a_{be}*b_e(o_2) = 0.252，则\Psi_2(e) = b$
-    - 比如，$\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
+    - 比如， $\delta_{2}(e) = 0.252，对应的是\delta_{1}(b)*a_{be}*b_e(o_2) = 0.252，则\Psi_2(e) = b$
+    - 比如， $\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
         
 ![维特比算法实例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/维特比算法实例.jpg)
 
