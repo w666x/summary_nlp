@@ -432,6 +432,12 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 | 全连接层 | 线性全连接层
 
 
+- 卷积
+    - 卷积是经典CV里面的操作，什么边缘、铜版画效果都可以通过卷积搞出来，所以**卷积是在对图像进行特征提取**。
+        - CNN里的卷积核是一个科学系的参数。卷积具有平移不变性
+    - 池化，max pooling和average pooling相对于全连接
+
+
 - 卷积核的特点
     - 1、大卷积核用多个小卷积核代替；
     - 2、单一尺寸的卷积核用多尺寸卷积核代替；
@@ -441,8 +447,35 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
     
 ![CNN在文本中的应用](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/CNN在文本中的应用.png)
 ![多通道卷积示例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/多通道卷积.jpg)
+
+
+- textcnn
+    - CNN也能用于序列数据，只是卷积的一个维度是定的，也就是词向量长度，这个时候卷积相当于在提取n-gram的特征
+    
+    
 ![TextCNN卷积示例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/TEXTCNN卷积示例.jpg)
 <!-- #endregion -->
+
+#### RNN
+
+<!-- #region -->
+##### LSTM
+- LSTM结构：三个门（σ）从左到右分别是
+    - 遗忘门：遗忘多少前一细胞状态的 $C_{t-1}$
+    - 输入门：更新当前状态 $C_t$
+    - 输出门：结合 $C_t和X_t，输出H_t$
+
+
+- 相对于RNN的优势，就是模型更复杂，同时C的属性可以（高概率）从头传到尾
+    - 如果遗忘门等于1，或者接近1，那么在cell这条链路的信息会很容易往下传递，类似resnet里面的short-cut，
+    - 反过来的梯度也是，所以这里**梯度消失和爆炸的问题会得以缓解**。但并没有"解决问题"。
+<!-- #endregion -->
+
+##### GRU
+- 变更项
+    - 将遗忘门和输入门合成了一个单一的重置门（reset gate），也就是说多大程度上擦除以前的状态state, $h_{t-1}$，
+    - 另外细胞更新操作变为更新门（update gete），它的作用是多大程度上要用candidate来更新当前的hidden layer 
+    - **同样还混合了细胞状态和隐藏状态,比标准LSTM简单**
 
 <!-- #region -->
 #### HMM算法
@@ -590,6 +623,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
     - Encoder端的Block包括两个模块，多头self-attention模块以及一个前馈神经网络模块；
     - Decoder端的Block包括三个模块，多头self-attention模块，多头Encoder-Decoder attention交互模块，以及一个前馈神经网络模块；
     - 需要注意：**Encoder端和Decoder端中的每个模块都有残差层和Layer Normalization层。即下图的Add & Norm**
+    - Encoder里面是纯粹的从头干到尾，Decoder是逐个解码的方式
     
     
 - transformer模型由编码器（6层）和解码器（6层）组成，下文主要介绍编码器和解码器的内容；
@@ -602,7 +636,125 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 <!-- #endregion -->
 
 <!-- #region -->
+##### 注意力机制
+
+- 注意力机制，attention
+    - 注意力得分的计算方式，其中，h是query向量，h是隐藏层向量，v是词向量，W，U是权重矩阵；
+    - 加法模型， $s(h, q) = v^Ttanh(Wh + Uq)$
+    - 点积模型， $s(h, q) = h^Tq$
+    - 缩放点积模型， $s(h, q) = \frac{h^Tq}{\sqrt{D}}$
+    - 双向性模型， $s(h, q) = h^TWq = h^T(U^TV)q = (Uh)^T(Vq)$
+
+
+- 自注意力机制，self-attention
+    - 自注意力则是h自己和其他所有位置来做计算，输出一个在t位置融合了所有h信息的一个状态 $h'_t$
+<!-- #endregion -->
+
+<!-- #region -->
+##### QA
+
+- Q1：自注意力机制，为什么要分别乘以Wq/Wk/Wv而不是直接点积呢？
+    - 1）增加学习参数  
+    - 2）减少自己和自己点积值太大的问题。
+
+
+- Q2：为什么softmax之前要除以一个 $\sqrt(d_k)$呢？
+    - 为softmax对于输入的数量级很敏感，**太大会把所有概率都分配给一个位置**，类似onehot那样，而极大值的结果就是梯度为0，梯度消失了
+    - 而前面h1的维度会影响logit的数量级，为什么呢？
+        - 因为假设每个维度 $h_{di}$是独立同分布，均值为0，方差为1。
+        - 最后加和之后，它们的均值还是0，但是方差是d(维度数量)
+        - 所以需要进行一个矫正，让它回归1，应该除以 $\sqrt(d_k)$，
+        - 为啥开根，因为方差计算公式是做差再平方，要将最终方差从d缩成1，里面的每个参数要除以 $\sqrt(d_k)$
+
+
+- Q3：为什么其他场景【比如输出分类结果时，经过一个softmax层】的softmax不用除以这个dk呢，因为 
+    - 1）其他场景都在分类层了，离损失函数非常近.
+    - 2）这里注意力分数计算的时候存在h和h相乘，而在分类softmax处是不存在的. 
+    - 3）其次加了实际上会有帮助，这是一个叫做temperature scaling的技巧。
+    
+    
+- Q4：Transformer 相比于 RNN/LSTM，有什么优势？
+    - 并行能力增加，特别是在encoder部分，每一层都是可以同时算的，不用等（Elmo里也得等），这样可以训练更大的网络，
+    - 同时有一堆jump connection，可以训练更深的网络。
+    - 可以更好的利用上下文信息
+    
+    
+- Q5：为什么Positional encoding？
+    - 因为self attention跟位置没关系，所以需要把位置信息输进去，所以transformer使用了固定的positional encoding来表示token在句子中的绝对位置信息。
+    - transformer中利用余弦进行位置编码，后面在bert里被替换成了可学习的参数。
+<!-- #endregion -->
+
 #### BERT模型
+- 模型介绍
+    - **只用transformer的encoder就是bert了**，设计了几个任务(mask LM，next sentence predict)来进行自监督训练。
+    - MLM会带来一个问题，就是fine tuning或者inference的时候，是没有[mask]标签的。
+    - NSP任务，后续很多工作发现不加好像也没啥影响……因为这个任务太简单了，而且在NSP的负例情况下，基于另一个文档的句子来预测词，会给MLM任务带来很大噪音。
+
+<!-- #region -->
+##### BERT模型的变种
+
+- 1）ALBERT
+    - A light bert，也算是轻量化的bert了，large模型（24层）参数规模小了接近20倍
+    - **第一个技术是对嵌入参数化进行因式分解**。大的词汇嵌入矩阵分解为两个小的矩阵，将隐藏层的大小与嵌入层的分离开。这种分离使得隐藏层的增加更加容易，同时不显著增加词汇嵌入的参数量。
+        - （不再将 one-hot 向量直接映射到大小为 H 的隐藏空间，先映射到一个低维词嵌入空间 E，然后再映射到隐藏空间。通过这种分解，研究者可以将词嵌入参数从 O(V × H) 降低到 O(V × E + E × H)，这在 H 远远大于 E 的时候，参数量减少得非常明显。）
+        - （人话：把V*H的词向量矩阵分解为 A = V*E 和 B = E*H的表示，具体I的词向量就是Ai*B。这时词向量简化的常规套路，很多类似的方法。
+    - **第二种技术是跨层参数共享**。这一技术可以避免参数量随着网络深度的增加而增加。
+    - 两种技术都显著降低了 BERT 的参数量，同时不对其性能造成明显影响，从而提升了参数效率。ALBERT 的配置类似于 BERT-large，但参数量仅为后者的 1/18，训练速度却是后者的 1.7 倍。
+    - 训练任务方面：**提出了Sentence-order prediction (SOP)来取代NSP**。
+        - 具体来说，其正例与NSP相同，但负例是通过选择一篇文档中的两个连续的句子并将它们的顺序交换构造的。这样两个句子就会有相同的话题，模型学习到的就更多是句子间的连贯性。用于句子级别的预测（SOP）。
+        - SOP 主要聚焦于句间连贯，用于解决原版 BERT 中下一句预测（NSP）损失低效的问题。
+        
+        
+- 2）Transformer-XL
+    - Transformer-XL是对transformer的改进， XL means extra long，Transformer的编码能力超越了RNN，但是对长距离依赖的建模能力仍然不足
+    - 1）**提出片段级递归机制**(segment-level recurrence mechanism)，引入一个记忆(memory)模块（类似于cache或cell），用来循环建模片段之间的联系
+    - 2）**提出相对位置编码机制**(relative position embedding scheme)，代替绝对位置编码
+        - 回忆一下，位置编码只是为了弥补self attention与位置无关，提供一些信息帮助它知道怎么从句子其他部分搜集信息。所以其实没必要知道绝对位置，相对位置就够了（比如离得近的信息权重强一些）
+        - 具体做法就是在计算Attention值的时候，把位置编码拆开，用R(i-j) 来代理（i,j是绝对位置，相减就是相对位置了）
+    - 3）faster evaluation
+        - evalution的时候可以跳着走，比如4个一跳，而传统transformer如果需要对超长的句子建模，可能需要挨个轮过去，做很多计算。
+        
+        
+        
+- 3）XLNet
+    - **BERT有个不符合真实情况的假设：即被mask掉的token是相互独立的。**
+        - 比如预训练时输入：“自然[Mask][Mask]处理”，目标函数其实是 p(语|自然处理)+p(言|自然处理)，而如果使用AR则应该是 p(语|自然)+p(言|自然语)。这样下来BERT得到的概率分布也是基于这个假设的，忽略了这些token之间的联系。
+        - **BERT在预训练和精调阶段存在差异**：因为在预训练阶段大部分输入都包含[Mask]，引入了噪声，即使在小部分情况下使用了其他token，但仍与真实数据存在差异。
+    - XLNet的创新点是Permutation Language Modeling
+        - 用AR的方式，因为它没有mask；但不完全用，因为传统的AR是单向的。
+        - 实际用的方式是按顺序挨个mask掉，比如x1-4打乱为 3,2,4,1；那预测3的时候全mask掉，预测2的时候mask掉 241，预测4的时候41。这样也是双向的，能看到后面的信息，但同时又没有mask符号了。而且因为有相对绝对位置编码的存在，这个东西还是能学到的。
+    - **实际做的时候是通过attention mask来实现类似permutation的效果，而且使用了一个two-stream的注意力计算机制**，
+        - 因为要预测x2，必须要知道我的需求是位置2的token，否则我都不知道预测的是哪一个，所以其位置信息要被带上来，但不能带对应的token信息。
+    - **XLNet还引入了Transformer-XL的长距离能力**
+    
+  
+  
+- 4）Roberta
+    - 从模型上来说，RoBERTa基本没有什么太大创新，主要是在BERT基础上做了几点调整： 
+    - 1）训练时间更长，batch size更大，训练数据更多； 
+    - 2）移除了next predict loss；
+    - 3）训练序列更长；
+    - 4）动态调整Masking机制。
+    
+    
+    
+- 5）模型蒸馏
+    - 蒸馏的目标是让学生模型学习到教师模型的泛化能力，理论上得到的结果会比单纯拟合训练数据的学生模型要好。
+    - 蒸馏的操作，从网络结构的各个部分（**embedding，中间层，attention矩阵，输出层logit），到训练步骤的各个环节（从预训练到精调）**，能蒸的全蒸了，用到的目标函数主要有MSE,cosine loss，KL散度等等。
+
+| 模型名称 | 模型介绍 | 目标 | 提出时间
+|:- |:- |:- |:-  
+| Distilled BiLSTM | 教师模型采用精调过的BERT-large，学生模型采用BiLSTM+ReLU | hard label的交叉熵+logits之间的MSE | 2019年
+| BERT-PKD | 改从中间层进行知识蒸馏，避免在蒸馏最后一层时拟合过快的现象，比如bert-base12层，学生用6层或者3层跳着/最后三层）来蒸馏 | | 2019年
+| DIstillBERT | 在预训练阶段进行蒸馏。将尺寸减小了40%，速度提升60%，效果好于BERT-PKD，为教师模型的97%。学生模型初始化是跳着取原来的模型层的参数 | 损失函数由MLM loss、教师-学生最后一层的交叉熵、隐层之间的cosine loss组成 | 2019年
+| TinyBERT | 就提出了two-stage learning框架，**分别在预训练和精调阶段蒸馏教师模型**，得到了参数量减少7.5倍，速度提升9.4倍的4层BERT，效果可以达到教师模型的96.8%，同时这种方法训出的6层模型甚至接近BERT-base，超过了BERT-PKD和DistillBERT |注意力矩阵可以捕获到丰富的知识，提出了注意力矩阵的蒸馏，采用教师-学生注意力矩阵logits的MSE作为损失函数 | 2019年
+| MobileBERT | MobileBERT[6]则致力于减少每层的维度，在保留24层的情况下，减少了4.3倍的参数，速度提升5.5倍，在GLUE上平均只比BERT-base低了0.6个点，效果好于TinyBERT和DistillBERT。增加线性层，进行维度放缩。<br> BERT中 embedding的维度是512，进入transformer后扩大为1024，而学生模型则是从512缩小至128，使得参数量骤减。
+| MiniLM | 蒸馏Value-Value矩阵（V*V）。Value-Relation Transfer可以让学生模型更深入地模仿教师模型，实验表明可以带来1-2个点的提升。同时作者考虑到学生模型的层数、维度都可能和教师模型不同，在实验中只蒸馏最后一层，并且只蒸馏这两个矩阵的KL散度，简直是懒癌福音 | 蒸馏KL散度
+<!-- #endregion -->
+
+##### QA
+
+<!-- #region -->
 1. Bert 的是怎样预训练的 
     - MLM：将完整句子中的部分字 mask，预测该 mask 词 
     - NSP：为每个训练前的例子选择句子 A 和 B 时，50% 的情况下 B 是真的在 A 后面的下一个句子， 50% 的情况下是来自语料库的随机句子，进行二分预测是否为真实下一句 在数据中随机选择 15% 的标记，其中 80%被换位[mask]，10%不变、10%随机替换其他单 词，原因是什么
@@ -646,7 +798,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 ### 实现demo
 
 
-#### HMM进行分词
+#### HMM+viterbi进行分词
 - 关于HMM，详细内容可参考[EM&HMM和CRF模型](https://github.com/w666x/blog_items/blob/main/04_nlp/EM&HMM&CRF模型.md)
 - 本质上看，分词可以看做是一个为文本中每个字符分类的过程，例如我们现在定义两个类别：
     - E代表词尾词，B代表非词尾词，
