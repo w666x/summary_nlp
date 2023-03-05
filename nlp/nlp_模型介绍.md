@@ -506,6 +506,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 
 ![HMM前向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM概率计算问题-前向demo.jpg)
 
+
 ![HMM后向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM后向计算.jpg)
        
        
@@ -535,32 +536,30 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
     
 <!-- #endregion -->
 
-<!-- #region -->
 - 3）预测问题-维特比算法
+    - 最优路径在时刻t通过节点 $i_t^*$，**那么这个从起点到$i_t^*$的部分路径，对所有从起点到$i_t^*$的路径来说，必须是最优的**。
 
-- 最优路径在时刻t通过节点 $i_t^*$，**那么这个从起点到$i_t^*$的部分路径，对所有从起点到$i_t^*$的路径来说，必须是最优的**。
-
-- $\color{red}{算法3.2}$维特比算法
-- 定义在时刻t状态为i的所有单个路径$(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$，N为状态总数
-    $$\begin{aligned}\delta_t(i) &= \max_{i_1,i_2,\cdots,i_{t-1}}P(i_t=i,i_{t-1},\cdots,i_1,o_t,\cdots,o_1|\lambda), \quad i=1,2,\cdots,N \\
-    \delta_{t+1}(i) &= \max_{i_1,i_2,\cdots,i_{t}}P(i_{t+1}=i,i_t,\cdots,i_1,o_{t+1},\cdots,o_1|\lambda),\quad i=1,2,\cdots,N \\ 
-    &= \max_{1\le j\le N}[\delta_t(j)a_{ji}]b_i(o_{t+1}),\quad t=1,2,\cdots,N,t=1,2,\cdots,T
-    \end{aligned}$$
-- **记录位置定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大的路径的第t-1个节点为** ：
-$$\Psi_t(i) = \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}],\quad i=1,2,\cdots,N$$
-- 输入：模型 $\lambda = (A,B,\pi)和观测O={o_1,o_2,\cdots,o_T}$
-- 输出：最优路径 $I^* = (i_1^*,i_2^*,\cdots,i_T^*)$
-- 步骤：
-    - 1）初始化
-    $$\begin{aligned}\delta_1(i) &= \pi_ib_i(o_1) = p(o_1, i_1 = i) = p(i_1 = i) * p(o_1 | i_1 = i) \qquad i=1,2,\cdots,N,为可能状态总数 \\
-    \Psi_1(i) &= 0 \qquad i=1,2,\cdots, N\end{aligned}$$
-    - 2）递推
-    $$\begin{aligned}\delta_{t}(i) &= \max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]b_i(o_{t}) \qquad i=1,2,\cdots,N,为可能状态总数 \\
-    \Psi_t(i) &= \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]  \qquad i=1,2,\cdots,N,为可能状态总数 \end{aligned}$$
-    - 3）终止
-        $$\begin{aligned}P^* &= \max_{1\le j\le N}\delta_T{(j)} \\
-    i_T^* &= arg\max_{1\le j\le N}[\delta_T(j)]\end{aligned}$$
-    - 4）回溯 $i_t^* = \Psi_{t+1}(i_{t+1}^*)$
+    - $\color{red}{算法3.2}$维特比算法
+    - 定义在时刻t状态为i的所有单个路径$(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$，N为状态总数
+        $$\begin{aligned}\delta_t(i) &= \max_{i_1,i_2,\cdots,i_{t-1}}P(i_t=i,i_{t-1},\cdots,i_1,o_t,\cdots,o_1|\lambda), \quad i=1,2,\cdots,N \\
+        \delta_{t+1}(i) &= \max_{i_1,i_2,\cdots,i_{t}}P(i_{t+1}=i,i_t,\cdots,i_1,o_{t+1},\cdots,o_1|\lambda),\quad i=1,2,\cdots,N \\ 
+        &= \max_{1\le j\le N}[\delta_t(j)a_{ji}]b_i(o_{t+1}),\quad t=1,2,\cdots,N,t=1,2,\cdots,T
+        \end{aligned}$$
+    - **记录位置定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大的路径的第t-1个节点为** ：
+    $$\Psi_t(i) = \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}],\quad i=1,2,\cdots,N$$
+    - 输入：模型 $\lambda = (A,B,\pi)和观测O={o_1,o_2,\cdots,o_T}$
+    - 输出：最优路径 $I^* = (i_1^*,i_2^*,\cdots,i_T^*)$
+    - 步骤：
+        - 1）初始化
+        $$\begin{aligned}\delta_1(i) &= \pi_ib_i(o_1) = p(o_1, i_1 = i) = p(i_1 = i) * p(o_1 | i_1 = i) \qquad i=1,2,\cdots,N,为可能状态总数 \\
+        \Psi_1(i) &= 0 \qquad i=1,2,\cdots, N\end{aligned}$$
+        - 2）递推
+        $$\begin{aligned}\delta_{t}(i) &= \max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]b_i(o_{t}) \qquad i=1,2,\cdots,N,为可能状态总数 \\
+        \Psi_t(i) &= \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]  \qquad i=1,2,\cdots,N,为可能状态总数 \end{aligned}$$
+        - 3）终止
+            $$\begin{aligned}P^* &= \max_{1\le j\le N}\delta_T{(j)} \\
+        i_T^* &= arg\max_{1\le j\le N}[\delta_T(j)]\end{aligned}$$
+        - 4）回溯 $i_t^* = \Psi_{t+1}(i_{t+1}^*)$
         
         
 - 4）实例，demo
@@ -576,7 +575,7 @@ $$\Psi_t(i) = \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}],\quad i=1,2,\cdots,N
     - 比如，$\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
         
 ![维特比算法实例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/维特比算法实例.jpg)
-<!-- #endregion -->
+
 
 - 上述3个基本问题的联系
     - 首先，要学会用前向算法和后向算法算观测序列出现的概率，
