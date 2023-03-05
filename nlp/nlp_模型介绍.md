@@ -446,6 +446,16 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 
 <!-- #region -->
 #### HMM算法
+
+- 常见的3个问题
+
+| 问题分类 | 说明 | demo | 求解方式
+|:- |:- |:- |:-
+| **概率计算问题** | 给定模型 $\lambda = (A,B,\pi)和观测序列O=(o_1,o_2,\cdots,o_T)$，计算该观测序列出现的概率 | 模型 $\lambda = (A,B,\pi)$已知，观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $ | 需要求解 $P(Q|\lambda)$，即观测序列Q发生的概率，可通过**前向-后向算法**求解
+| **学习问题** | 已知观测序列 $O=(o_1,o_2,\cdots,o_T)$，估计模型 $\lambda = (A,B,\pi)$的参数，使得在该模型下观测序列概率 $P(O|\lambda)$最大| demo为：根据观测序列 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，去寻找模型的一组隐状态参数 $\lambda = (A,B,\pi)$，使得模型在观测序列发生时， $P(Q|\lambda)$最大， | 使用EM算法求解
+| **预测问题**（即解码问题） | 已知模型和观测序列 $O=(o_1,o_2,\cdots,o_T)$，求对给定观测序列条件概率 $P(I|O)$最大的状态序列 $I=(i_1,i_2,\cdots,i_t)$ | demo为：已知观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，当已知模型参数 $\lambda = (A,B,\pi)$后，求出哪一种状态序列发生的可能性最大。 | 抽取什么样的盒子顺序（状态序列），更有可能得到 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $的观测结果，**使用维特比算法**、动态规划算法求解
+
+
 - 马尔科夫过程
     - 假设一个随机过程，其 $t_n时刻的状态x_n，只与t_{n-1}时刻的状态x_{n-1}$相关
     - 一句话去概括，即**当前时刻状态仅与上一时刻状态相关，与其他时刻不相关。【1阶马尔科夫】**
@@ -475,32 +485,18 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
     - 初始状态概率，**模型在初始时刻各状态出现的概率**，记为 $\pi = (\pi_i)$，其中，
     $$\pi_i = P(i_1=q_i), \quad i=1,2,\cdots, N，\text{表示模型的初始状态时刻t=1处于状态 $q_i$的概率}$$
 
-
-
-- 常见的3个问题
-    - **概率计算问题**
-        - 给定模型 $\lambda = (A,B,\pi)和观测序列O=(o_1,o_2,\cdots,o_T)$，计算该观测序列出现的概率
-        - demo为：模型 $\lambda = (A,B,\pi)$已知，观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $
-        - 需要求解 $P(Q|\lambda)$，即观测序列Q发生的概率，可通过前向-后向算法求解
-    - **学习问题**
-        - 已知观测序列 $O=(o_1,o_2,\cdots,o_T)$，估计模型 $\lambda = (A,B,\pi)$的参数，使得在该模型下观测序列概率 $P(O|\lambda)$最大
-        - demo为：根据观测序列 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，去寻找模型的一组隐状态参数 $\lambda = (A,B,\pi)$，使得模型在观测序列发生时， $P(Q|\lambda)$最大，使用EM算法求解
-    - **预测问题**（即解码问题）
-        - 已知模型和观测序列 $O=(o_1,o_2,\cdots,o_T)$，求对给定观测序列条件概率 $P(I|O)$最大的状态序列 $I=(i_1,i_2,\cdots,i_t)$
-        - demo为：已知观测序列为 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $，当已知模型参数 $\lambda = (A,B,\pi)$后，求出哪一种状态序列发生的可能性最大。
-        - 即，抽取什么样的盒子顺序（状态序列），更有可能得到 $Q = 白 \rightarrow 黑 \rightarrow 白 \rightarrow 白 \rightarrow 黑 $的观测结果，使用维特比算法、动态规划算法求解
         
         
         
 - 1) 概率问题求解
-- 前向算法，特点是 $\color{red}{联合概率分布}$ ，
-    - 定义 $\alpha_t{i} = P(o_1, o_2, \cdots, o_t, i_t = q_i|\lambda), 其中，\alpha_t(i)是o_1, o_2, \cdots, o_t和i_t$的联合概率分布
-    - 先计算， $\alpha_1(i), \alpha_2(i), \cdots, \alpha_t(i)$, 每一个时间点的 $\alpha$都使用前一时刻的计算结果， $\alpha_{t+1}(i) = [\sum_{j=1}^N\alpha_t(j)a_{ji}]b_i(o_{t+1}), \quad i=1,2,\cdots,N；t=1,2,\cdots,T-1$
-    - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\alpha_T(i)$
-- 后向算法，特点是 $\color{red}{条件概率分布}$，
-    - 定义 $\beta_t(i) = P(o_{t+1},o_{t+2},\cdots,o_T | i_t=q_i,\lambda), 其中，\beta_t(i)是o_{t+1}, o_{t+2}, \cdots, o_T的关于i_t$的条件概率分布
-    - 先计算， $\beta_t(i), \beta_{t-1}(i), \cdots, \beta_1(i)$, 每一个时间点的 $\beta$都使用后一时刻的计算结果， $\beta_{t}(i) = \sum_{j=1}^Na_{ij}b_j(o_{t+1})\beta_{t+1}(j), \quad i=1,2,\cdots,N；t=T-1,T-2,\cdots,1$
-    - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\pi_ib_i(o_1)\beta_1(i)$
+    - 前向算法，特点是 $\color{red}{联合概率分布}$ ，
+        - 定义 $\alpha_t{i} = P(o_1, o_2, \cdots, o_t, i_t = q_i|\lambda), 其中，\alpha_t(i)是o_1, o_2, \cdots, o_t和i_t$的联合概率分布
+        - 先计算， $\alpha_1(i), \alpha_2(i), \cdots, \alpha_t(i)$, 每一个时间点的 $\alpha$都使用前一时刻的计算结果， $\alpha_{t+1}(i) = [\sum_{j=1}^N\alpha_t(j)a_{ji}]b_i(o_{t+1}), \quad i=1,2,\cdots,N；t=1,2,\cdots,T-1$
+        - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\alpha_T(i)$
+    - 后向算法，特点是 $\color{red}{条件概率分布}$，
+        - 定义 $\beta_t(i) = P(o_{t+1},o_{t+2},\cdots,o_T | i_t=q_i,\lambda), 其中，\beta_t(i)是o_{t+1}, o_{t+2}, \cdots, o_T的关于i_t$的条件概率分布
+        - 先计算， $\beta_t(i), \beta_{t-1}(i), \cdots, \beta_1(i)$, 每一个时间点的 $\beta$都使用后一时刻的计算结果， $\beta_{t}(i) = \sum_{j=1}^Na_{ij}b_j(o_{t+1})\beta_{t+1}(j), \quad i=1,2,\cdots,N；t=T-1,T-2,\cdots,1$
+        - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\pi_ib_i(o_1)\beta_1(i)$
         
 
 
@@ -516,21 +512,21 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 <!-- #region -->
       
 - 2）参数学习问题
-- 问题：已知观测序列，但不知道状态序列，估计隐马尔可夫模型的参数 $P(O|\lambda) = \sum_{I}P(O|I,\lambda)P(I|\lambda)$， 使得在该模型下观测序列概率 $P(O|\lambda)$最大
+    - 问题：已知观测序列，但不知道状态序列，估计隐马尔可夫模型的参数 $P(O|\lambda) = \sum_{I}P(O|I,\lambda)P(I|\lambda)$， 使得在该模型下观测序列概率 $P(O|\lambda)$最大
 
 
 - 方法：
-- 1）确定完全数据的对数似然函数
-    - 观测变量 $O=(o_1,o_2,\cdots,o_T)，隐变量I={i_1,i_2,\cdots, i_T}，完全数据(O,I)={o_1,o_2,\cdots,o_T,i_1,i_2,\cdots,i_T}$
-    - 完全数据的对数似然函数是 $logP(O,I|\lambda)$
-- 2）E步，求Q函数
-    $$\begin{aligned}Q(\lambda ,\hat\lambda) &= E_{I\text{~}P(I|O,\hat\lambda)}logP(O,I|\lambda) \\
-    &= \sum_IP(I|O,\hat\lambda)logP(O,I|\lambda) \\ 
-    &= \frac{1}{P(O|\hat\lambda)}\sum_IP(I,O|\hat\lambda)logP(O,I|\lambda)\end{aligned}$$
-    - 其中，
-    $$P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)\cdots a_{i_{T-1}i_T}b_{i_T}(o_T)$$
-- 3）M步，极大化Q函数，分别求出$\pi,a,b$的估计值
-    - Q函数&约束条件（和为1这些），然后应用拉格朗日乘子法求解
+    - 1）确定完全数据的对数似然函数
+        - 观测变量 $O=(o_1,o_2,\cdots,o_T)，隐变量I={i_1,i_2,\cdots, i_T}，完全数据(O,I)={o_1,o_2,\cdots,o_T,i_1,i_2,\cdots,i_T}$
+        - 完全数据的对数似然函数是 $logP(O,I|\lambda)$
+    - 2）E步，求Q函数
+        $$\begin{aligned}Q(\lambda ,\hat\lambda) &= E_{I\text{~}P(I|O,\hat\lambda)}logP(O,I|\lambda) \\
+        &= \sum_IP(I|O,\hat\lambda)logP(O,I|\lambda) \\ 
+        &= \frac{1}{P(O|\hat\lambda)}\sum_IP(I,O|\hat\lambda)logP(O,I|\lambda)\end{aligned}$$
+        - 其中，
+        $$P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)\cdots a_{i_{T-1}i_T}b_{i_T}(o_T)$$
+    - 3）M步，极大化Q函数，分别求出$\pi,a,b$的估计值
+        - Q函数&约束条件（和为1这些），然后应用拉格朗日乘子法求解
     
     
     
