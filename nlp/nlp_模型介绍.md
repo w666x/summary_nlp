@@ -493,7 +493,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         
         
 - 1) 概率问题求解
-    - 前向算法，特点是 $\color{red}{联合概率分布}$，
+    - 前向算法，特点是 $\color{red}{联合概率分布}$ ，
         - 定义 $\alpha_t{i} = P(o_1, o_2, \cdots, o_t, i_t = q_i|\lambda), 其中，\alpha_t(i)是o_1, o_2, \cdots, o_t和i_t$的联合概率分布
         - 先计算， $\alpha_1(i), \alpha_2(i), \cdots, \alpha_t(i)$, 每一个时间点的 $\alpha$都使用前一时刻的计算结果， $\alpha_{t+1}(i) = [\sum_{j=1}^N\alpha_t(j)a_{ji}]b_i(o_{t+1}), \quad i=1,2,\cdots,N；t=1,2,\cdots,T-1$
         - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\alpha_T(i)$
@@ -503,7 +503,9 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         - 最后，计算到最终的概率计算问题， $P(O|\lambda) = \sum_{i=1}^N\pi_ib_i(o_1)\beta_1(i)$
         
 
+
 ![HMM前向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM概率计算问题-前向demo.jpg)
+
 ![HMM后向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM后向计算.jpg)
         
         
