@@ -504,7 +504,7 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
         
 
 
-![HMM前向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM概率计算问题-前向demo.jpg)
+![HMM前向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM概率计算-前向.jpg)
 
 
 ![HMM后向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM后向计算.jpg)
