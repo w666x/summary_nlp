@@ -507,14 +507,76 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 ![HMM前向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM概率计算问题-前向demo.jpg)
 
 ![HMM后向计算](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM后向计算.jpg)
+       
+       
+ 
+<!-- #endregion -->
+
+      
+- 2）参数学习问题
+- 问题：已知观测序列，但不知道状态序列，估计隐马尔可夫模型的参数 $P(O|\lambda) = \sum_{I}P(O|I,\lambda)P(I|\lambda)$， 使得在该模型下观测序列概率 $P(O|\lambda)$最大
+- 方法：
+    - 1）确定完全数据的对数似然函数
+        - 观测变量 $O=(o_1,o_2,\cdots,o_T)，隐变量I={i_1,i_2,\cdots, i_T}，完全数据(O,I)={o_1,o_2,\cdots,o_T,i_1,i_2,\cdots,i_T}$
+        - 完全数据的对数似然函数是 $logP(O,I|\lambda)$
+    - 2）E步，求Q函数
+        $$\begin{aligned}Q(\lambda ,\hat\lambda) &= E_{I\text{~}P(I|O,\hat\lambda)}logP(O,I|\lambda) \\
+        &= \sum_IP(I|O,\hat\lambda)logP(O,I|\lambda) \\ 
+        &= \frac{1}{P(O|\hat\lambda)}\sum_IP(I,O|\hat\lambda)logP(O,I|\lambda)\end{aligned}$$
+        - 其中，
+        $$P(O,I|\lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)\cdots a_{i_{T-1}i_T}b_{i_T}(o_T)$$
+    - 3）M步，极大化Q函数，分别求出$\pi,a,b$的估计值
+        - Q函数&约束条件（和为1这些），然后应用拉格朗日乘子法求解
+    
+    
+    
+
+
+- 3）预测问题-维特比算法
+    - 最优路径在时刻t通过节点 $i_t^*$，**那么这个从起点到$i_t^*$的部分路径，对所有从起点到$i_t^*$的路径来说，必须是最优的**。
+
+    - $\color{red}{算法3.2}$维特比算法
+    - 定义在时刻t状态为i的所有单个路径$(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$，N为状态总数
+        $$\begin{aligned}\delta_t(i) &= \max_{i_1,i_2,\cdots,i_{t-1}}P(i_t=i,i_{t-1},\cdots,i_1,o_t,\cdots,o_1|\lambda), \quad i=1,2,\cdots,N \\
+        \delta_{t+1}(i) &= \max_{i_1,i_2,\cdots,i_{t}}P(i_{t+1}=i,i_t,\cdots,i_1,o_{t+1},\cdots,o_1|\lambda),\quad i=1,2,\cdots,N \\ 
+        &= \max_{1\le j\le N}[\delta_t(j)a_{ji}]b_i(o_{t+1}),\quad t=1,2,\cdots,N,t=1,2,\cdots,T
+        \end{aligned}$$
+    - **记录位置定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大的路径的第t-1个节点为** ：
+    $$\Psi_t(i) = \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}],\quad i=1,2,\cdots,N$$
+    - 输入：模型 $\lambda = (A,B,\pi)和观测O={o_1,o_2,\cdots,o_T}$
+    - 输出：最优路径 $I^* = (i_1^*,i_2^*,\cdots,i_T^*)$
+    - 步骤：
+        - 1）初始化
+        $$\begin{aligned}\delta_1(i) &= \pi_ib_i(o_1) = p(o_1, i_1 = i) = p(i_1 = i) * p(o_1 | i_1 = i) \qquad i=1,2,\cdots,N,为可能状态总数 \\
+        \Psi_1(i) &= 0 \qquad i=1,2,\cdots, N\end{aligned}$$
+        - 2）递推
+        $$\begin{aligned}\delta_{t}(i) &= \max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]b_i(o_{t}) \qquad i=1,2,\cdots,N,为可能状态总数 \\
+        \Psi_t(i) &= \arg\max_{1\le j\le N}[\delta_{t-1}(j)a_{ji}]  \qquad i=1,2,\cdots,N,为可能状态总数 \end{aligned}$$
+        - 3）终止
+            $$\begin{aligned}P^* &= \max_{1\le j\le N}\delta_T{(j)} \\
+        i_T^* &= arg\max_{1\le j\le N}[\delta_T(j)]\end{aligned}$$
+        - 4）回溯 $i_t^* = \Psi_{t+1}(i_{t+1}^*)$
         
         
+- 实例，demo
+    - 以下面例子做说明，当我们计算到第三个汉字“是”后停止，
+        - 首先，应用上式算法步骤中的终止过程，计算 $最终概率P^*和最终的最优节点i_T^*$的值，为$P^*=0.1008、i_3^*=s$
+        - 然后，进行回溯，即：$i_2^* = \Psi_3(s) = e \rightarrow i_1^* = \Psi_2(e) = b$
+        - 综上，即得到前三个状态序列为：(b, e, s)
+    - 定义，
+        - 定义在时刻t状态为i的所有单个路径 $(i_1,i_2,\cdots,i_t)$中概率最大值为 $\delta_t(i)$
+        - 另外，由于对于任意一个时刻的 $\Psi_t(i)其和\delta_{t}(i)$的唯一区别就是，多了1个 $b_i(o_t)$, 而在计算任意1个状态i时，这个值是固定值，所以 $\delta_{t}(i)$最大的状态i，也是 $\Psi_t(i)$最大的状态
+        - 比如，$\delta_{2}(e) = 0.252，对应的是\delta_{1}(b)*a_{be}*b_e(o_2) = 0.252，则\Psi_2(e) = b$
+        - 比如，$\delta_{3}(s) = 0.1008，对应的是\delta_{2}(s)*a_{se}*b_e(o_3) = 0.1008，则\Psi_3(s) = e$
+        
+![维特比算法实例](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/维特比算法实例.jpg)
+
+
 - 上述3个基本问题的联系
     - 首先，要学会用前向算法和后向算法算观测序列出现的概率，
     - 然后，用Baum-Welch算法求参数的时候，某些步骤是需要用到前向算法和后向算法的，
     - 最后，计算得到参数后，我们就可以用来做预测了。
     - 因此，三个基本问题，它们是渐进的，解决NLP问题，应用HMM模型做解码任务应该是最终的目的。
-<!-- #endregion -->
 
 <!-- #region -->
 #### Transformer
