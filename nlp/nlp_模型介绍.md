@@ -1,3 +1,48 @@
+```python
+def lastStoneWeightII(stones):
+    """
+    :type stones: List[int]
+    :rtype: int
+    """
+    total = sum(stones)
+    n, m = len(stones), total // 2
+    dp = [[False] * (m + 1) for j in range(n + 1)] # dp[i + 1][j]表示前i个石头能否凑出重量j，其中j为neg部分能取到的最大数值
+    # print(dp) # dp[i+1][j]表示前i个石头是否能凑出重量j；dp[0][]表示不选任何石头的状态
+    dp[0][0] = True
+    
+    for i in range(n):
+        for j in range(m + 1):
+            # print(i, j)
+            if j < stones[i]:
+                dp[i+1][j] = dp[i][j]
+            else:
+                dp[i+1][j] = dp[i][j] or dp[i][j - stones[i]]
+    ans = None
+    for j in range(m, -1, -1):
+        print(m, j)
+        if dp[n][j]:
+            ans = total - 2 * j
+            # break
+    return ans
+```
+
+```python
+stones = [2,7,4,1,8,1]
+lastStoneWeightII(stones)
+```
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
+
 ### 模型对比
 
 
