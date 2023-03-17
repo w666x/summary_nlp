@@ -1,48 +1,3 @@
-```python
-def lastStoneWeightII(stones):
-    """
-    :type stones: List[int]
-    :rtype: int
-    """
-    total = sum(stones)
-    n, m = len(stones), total // 2
-    dp = [[False] * (m + 1) for j in range(n + 1)] # dp[i + 1][j]表示前i个石头能否凑出重量j，其中j为neg部分能取到的最大数值
-    # print(dp) # dp[i+1][j]表示前i个石头是否能凑出重量j；dp[0][]表示不选任何石头的状态
-    dp[0][0] = True
-    
-    for i in range(n):
-        for j in range(m + 1):
-            # print(i, j)
-            if j < stones[i]:
-                dp[i+1][j] = dp[i][j]
-            else:
-                dp[i+1][j] = dp[i][j] or dp[i][j - stones[i]]
-    ans = None
-    for j in range(m, -1, -1):
-        print(m, j)
-        if dp[n][j]:
-            ans = total - 2 * j
-            # break
-    return ans
-```
-
-```python
-stones = [2,7,4,1,8,1]
-lastStoneWeightII(stones)
-```
-
-```python
-
-```
-
-```python
-
-```
-
-```python
-
-```
-
 ### 模型对比
 
 
@@ -73,7 +28,7 @@ lastStoneWeightII(stones)
     - 1.HMM是生成模型，CRF是判别模型；
     - 2.CRF利用的是马尔科夫随机场（无向图），而HMM的基础是贝叶斯网络（有向图）；
     - 3.在概率计算问题、学习问题和预测问题上有差异；
-    - 4.HMM求解的是局部最优解，CRF求解的是全局最优解。
+    - 4.**HMM求解的是局部最优解，CRF求解的是全局最优解。**
     
     
 - 马尔科夫模型的问题
@@ -88,6 +43,13 @@ lastStoneWeightII(stones)
 - CRF简述
     - 首先 X,Y 是随机变量，P(Y/X)是给定 X 条件下 Y 的条件概率分布
     - 如果 Y 满足马尔可夫满足马尔科夫性，及不相邻则条件独立，则条件概率分布 P(Y|X)为条件随机场 CRF
+    
+    
+- CRF vs HMM vs MeMM（最大熵隐马尔可夫模型）的区别
+    - CRF，HMM(隐马模型)，MEMM(最大熵隐马模型)都常用来做序列标注的建模。
+    - 隐马模型一个最大的缺点就是由于其输出独立性假设，导致其不能考虑上下文的特征，限制了特征的选择。
+    - 最大熵隐马模型则解决了隐马的问题，可以任意选择特征，但由于其在每一节点都要进行归一化，所以只能找到局部的最优值，同时也带来了标记偏见的问题，即凡是训练语料中未出现的情况全都忽略掉。
+    - 条件随机场则很好的解决了这一问题，他并不在每一个节点进行归一化，而是所有特征进行全局归一化，因此可以求得全局的最优值。
     
     
 ![HMM改进](https://cdn.jsdelivr.net/gh/w666x/image/NLP_base/HMM改进.jpg)
@@ -480,6 +442,8 @@ $$\prod_{t=1}^T\prod_{-m\le j\le m, j\neq 0}P(D=1|w^{(t)}, w^{(t+j)})\prod_{k=1,
 - 卷积
     - 卷积是经典CV里面的操作，什么边缘、铜版画效果都可以通过卷积搞出来，所以**卷积是在对图像进行特征提取**。
         - CNN里的卷积核是一个科学系的参数。卷积具有平移不变性
+    - 对图像（不同的数据窗口数据）和滤波矩阵（一组固定的权重：因为每个神经元的多个权重固定，所以又可以看做一个恒定的**滤波器filter**）做内积（逐个元素相乘再求和）的操作就是所谓的『卷积』操作，也是卷积神经网络的名字来源。
+    - 非严格意义上来讲，一个滤波器即带着一组固定权重的神经元。多个滤波器叠加便成了卷积层。
     - 池化，max pooling和average pooling相对于全连接
 
 
