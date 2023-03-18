@@ -137,6 +137,10 @@
 12. Python里面match()和search()的区别？
     - re模块中`match(pattern,string[,flags])`,检查string的开头是否与pattern匹配。
     - re模块中`research(pattern,string[,flags])`,在string搜索pattern的第一个匹配值。
+    
+    
+13. 用Python匹配HTML tag的时候，<.*>和<.*?>有什么区别？
+    - $( <.*> )术语叫贪婪匹配和(<.*?> )叫做非贪婪匹配$
 <!-- #endregion -->
 
 <!-- #region -->
